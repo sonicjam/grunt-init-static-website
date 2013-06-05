@@ -1,0 +1,4 @@
+{
+  ".intermediate/*": false,
+  "dist/*": false
+}

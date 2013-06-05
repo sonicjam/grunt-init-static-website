@@ -1,0 +1,40 @@
+//
+// Common mixins
+
+
+// My custom mixins
+
+text-stroke(number color)
+  text-shadow: (number * -1) (number * -1) 0 color, number (number * -1) 0 color, (number * -1) number 0 color, number number 0 color
+
+
+// Filter Effects 1.0 (Editor's Draft)
+// http://dvcs.w3.org/hg/FXTF/raw-file/tip/filters/index.html
+
+filter()
+  -webkit-filter: arguments
+  filter: arguments
+
+filter-margin()
+  -webkit-filter-margin: arguments
+  filter-margin: arguments
+
+filter-margin-top()
+  -webkit-filter-margin-top: arguments
+  filter-margin-top: arguments
+
+filter-margin-right()
+  -webkit-filter-margin-right: arguments
+  filter-margin-right: arguments
+
+filter-margin-bottom()
+  -webkit-filter-margin-bottom: arguments
+  filter-margin-bottom: arguments
+
+filter-margin-left()
+  -webkit-filter-margin-left: arguments
+  filter-margin-left: arguments
+
+color-interpolation-filters()
+  -webkit-color-interpolation-filters: arguments
+  color-interpolation-filters: arguments
