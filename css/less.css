@@ -1,0 +1,29 @@
+body {
+  background-color: #e6e6e6;
+}
+header {
+  background-attachment: scroll;
+  background-color: #ffffff;
+  background-image: url("http://lorempixel.com/1280/1280/");
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: #000000;
+  padding: 2em;
+  -moz-text-shadow: -1px -1px 0 #ffffff, 1px -1px 0 #ffffff, -1px 1px 0 #ffffff, 1px 1px 0 #ffffff;
+  -ms-text-shadow: -1px -1px 0 #ffffff, 1px -1px 0 #ffffff, -1px 1px 0 #ffffff, 1px 1px 0 #ffffff;
+  -o-text-shadow: -1px -1px 0 #ffffff, 1px -1px 0 #ffffff, -1px 1px 0 #ffffff, 1px 1px 0 #ffffff;
+  -webkit-text-shadow: -1px -1px 0 #ffffff, 1px -1px 0 #ffffff, -1px 1px 0 #ffffff, 1px 1px 0 #ffffff;
+  text-shadow: -1px -1px 0 #ffffff, 1px -1px 0 #ffffff, -1px 1px 0 #ffffff, 1px 1px 0 #ffffff;
+}
+#main {
+  background-color: #ffffff;
+  padding: 3em 2em;
+}
+footer {
+  padding: 2em;
+  padding-top: 1em;
+}
+footer #sns > * {
+  display: inline-block;
+}
