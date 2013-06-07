@@ -1,0 +1,6 @@
+@import "compass"
+
+@mixin text-stroke($offset, $color)
+  $shadow: ($offset * -1) ($offset * -1) 0 $color, $offset ($offset * -1) 0 $color, ($offset * -1) $offset 0 $color, $offset $offset 0 $color
+
+  @include text-shadow($shadow)

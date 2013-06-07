@@ -1,0 +1,31 @@
+@import "compass"
+@import "_mixin_sass"
+
+$bgColor: rgb(255,255,255)
+$fgColor: rgb(0,0,0)
+$gray: rgb(230,230,230)
+
+body
+  background-color: $gray
+
+header
+  background-attachment: scroll
+  background-color: $bgColor
+  background-image: url("http://lorempixel.com/1280/1280/")
+  background-position: 50% 50%
+  background-repeat: no-repeat
+  background-size: cover
+  color: $fgColor
+  padding: 2em
+  @include text-stroke(1px, $bgColor)
+
+#main
+  background-color: $bgColor
+  padding: 3em 2em
+
+footer
+  padding: 2em
+  padding-top: 1em
+
+  #sns > *
+    display: inline-block

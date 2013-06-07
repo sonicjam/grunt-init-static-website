@@ -1,0 +1,13 @@
+body {
+    /* MSIE8 以下 */
+    background-color: #8181f7\9;
+    /* MSIE7 以下 */
+    *background-color: #a9f5a9;
+    /* MSIE6 */
+    _background-color: #f5a9a9;
+}
+
+body:not(:target) {
+    /* MSIE9 */
+    background-color: #d8d8d8\9;
+}

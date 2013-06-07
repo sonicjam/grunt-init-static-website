@@ -1,0 +1,17 @@
+.text-shadow (@shadow) {
+  -moz-text-shadow: @shadow;
+  -ms-text-shadow: @shadow;
+  -o-text-shadow: @shadow;
+  -webkit-text-shadow: @shadow;
+  text-shadow: @shadow;
+}
+
+.text-stroke (@offset; @color) {
+  @text-shadow:
+    -@offset -@offset 0 @color,
+     @offset -@offset 0 @color,
+    -@offset  @offset 0 @color,
+     @offset  @offset 0 @color;
+
+  .text-shadow(@text-shadow);
+}
