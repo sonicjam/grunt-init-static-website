@@ -312,9 +312,9 @@ module.exports = (grunt) ->
       'jsonlint'
     ]
     watcher: [
+      'notify:watch'
       'connect'
       'watch'
-      'notify:watch'
     ]
     default: [
       'css'
