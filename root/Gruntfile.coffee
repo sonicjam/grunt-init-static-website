@@ -163,6 +163,25 @@ module.exports = (grunt) ->
         src: '**/*'
         dest: '<%= path.publish %>'
 
+     #
+     # CSSO による CSS 最適化タスク
+     #
+     # * [grunt-csso](https://github.com/t32k/grunt-csso)
+     #
+     csso:
+       options:
+         restructure: true
+       intermediate:
+         expand: true
+         cwd: '<%= path.intermediate %>'
+         src: [
+           '**/*.css'
+           '!**/*.min.css'
+           '!**/*-min.css'
+         ]
+         dest: '<%= path.publish %>'
+         ext: '.min.css'
+
     #
     # Jade コンパイルタスク
     #
@@ -275,6 +294,25 @@ module.exports = (grunt) ->
         dest: '<%= path.intermediate %>'
         ext: '.css'
 
+     #
+     # UglifyJS による JavaScript 最適化タスク
+     #
+     # * [grunt-contrib-uglify](https://github.com/gruntjs/grunt-contrib-uglify)
+     #
+     uglify:
+       options:
+         preserveComments: false
+       intermediate:
+         expand: true
+         cwd: '<%= path.intermediate %>'
+         src: [
+           '**/*.js'
+           '!**/*.min.js'
+           '!**/*-min.js'
+         ]
+         dest: '<%= path.publish %>'
+         ext: '.min.js'
+
     #
     # ファイル更新監視タスク
     #
@@ -298,6 +336,7 @@ module.exports = (grunt) ->
       'less'
       'stylus'
       'sass'
+      'csso'
     ]
     html: [
       'jade'
@@ -307,6 +346,7 @@ module.exports = (grunt) ->
       #'jshint'
       #'coffeelint'
       'coffee'
+      'uglify'
     ]
     json: [
       'jsonlint'
@@ -338,9 +378,11 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-contrib-livereload'
   grunt.loadNpmTasks 'grunt-contrib-sass'
   grunt.loadNpmTasks 'grunt-contrib-stylus'
+  grunt.loadNpmTasks 'grunt-contrib-uglify'
   grunt.loadNpmTasks 'grunt-contrib-watch'
   grunt.loadNpmTasks 'grunt-bake'
   grunt.loadNpmTasks 'grunt-coffeelint'
+  grunt.loadNpmTasks 'grunt-csso'
   grunt.loadNpmTasks 'grunt-jsonlint'
   grunt.loadNpmTasks 'grunt-notify'
 
