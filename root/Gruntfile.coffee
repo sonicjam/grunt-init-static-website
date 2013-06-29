@@ -69,7 +69,10 @@ module.exports = (grunt) ->
       general:
         expand: true
         cwd: '<%= path.source %>'
-        src: '**/*.coffee'
+        src: [
+          '**/*.coffee'
+          '**/*.litcofee'
+        ]
         dest: '<%= path.intermediate %>'
         ext: '.js'
 
@@ -178,6 +181,7 @@ module.exports = (grunt) ->
            '**/*.css'
            '!**/*.min.css'
            '!**/*-min.css'
+           '!**/vendor/**'
          ]
          dest: '<%= path.publish %>'
          ext: '.min.css'
@@ -309,6 +313,7 @@ module.exports = (grunt) ->
            '**/*.js'
            '!**/*.min.js'
            '!**/*-min.js'
+           '!**/vendor/**'
          ]
          dest: '<%= path.publish %>'
          ext: '.min.js'
