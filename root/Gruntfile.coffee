@@ -295,7 +295,7 @@ module.exports = (grunt) ->
           '<%= path.source %>/img/sprites/*.png'
         ]
         destImg: '<%= path.source %>/img/sprite.png'
-        destCSS: '<%= path.source %>/css/_sprites.styl'
+        destCSS: '<%= path.source %>/css/sprites.css'
         algorithm: 'binary-tree'
         padding: 1
 
@@ -342,10 +342,55 @@ module.exports = (grunt) ->
     watch:
       options:
         livereload: true
-      source:
-        files: '<%= path.source %>/**/*'
+      css:
+        files: [
+          '<%= path.source %>/**/*.css'
+          '<%= path.source %>/**/*.less'
+          '<%= path.source %>/**/*.s(a|c)ss'
+          '<%= path.source %>/**/*.styl'
+        ]
         tasks: [
-          'default'
+          'css'
+          'copy'
+          'notify:build'
+        ]
+      html:
+        files: [
+          '<%= path.source %>/**/*.html'
+          '<%= path.source %>/**/*.jade'
+        ]
+        tasks: [
+          'html'
+          'copy'
+          'notify:build'
+        ]
+      image:
+        files: [
+          '<%= path.source %>/**/img/**/*'
+        ]
+        tasks: [
+          'image'
+          'copy'
+          'notify:build'
+        ]
+      js:
+        files: [
+          '<%= path.source %>/**/*.coffee'
+          '<%= path.source %>/**/*.js'
+          '<%= path.source %>/**/*.litcoffee'
+        ]
+        tasks: [
+          'js'
+          'copy'
+          'notify:build'
+        ]
+      json:
+        files: '<%= path.source %>/**/*.json'
+        tasks: [
+          'json'
+          'html'
+          'copy'
+          'notify:build'
         ]
 
 
@@ -386,8 +431,7 @@ module.exports = (grunt) ->
       'image'
       'js'
       'json'
-      'copy:source'
-      'copy:intermediate'
+      'copy'
       'notify:build'
     ]
 
