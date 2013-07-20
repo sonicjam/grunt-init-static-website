@@ -158,6 +158,7 @@ module.exports = (grunt) ->
           '!**/*.sass'
           '!**/*.scss'
           '!**/*.styl'
+          '!img/sprites/**/*'
         ]
         dest: '<%= path.intermediate %>'
       intermediate:
@@ -284,6 +285,21 @@ module.exports = (grunt) ->
         ext: '.css'
 
     #
+    # CSS スプライト作成タスク
+    #
+    # * [grunt-spritesmith](https://github.com/Ensighten/grunt-spritesmith)
+    #
+    sprite:
+      source:
+        src: [
+          '<%= path.source %>/img/sprites/*.png'
+        ]
+        destImg: '<%= path.source %>/img/sprite.png'
+        destCSS: '<%= path.source %>/css/_sprites.styl'
+        algorithm: 'binary-tree'
+        padding: 1
+
+    #
     # Stylus コンパイルタスク
     #
     # * [grunt-contrib-stylus](https://github.com/gruntjs/grunt-contrib-stylus)
@@ -347,6 +363,9 @@ module.exports = (grunt) ->
       'jade'
       'bake'
     ]
+    image: [
+      'sprite'
+    ]
     js: [
       #'jshint'
       #'coffeelint'
@@ -364,6 +383,7 @@ module.exports = (grunt) ->
     default: [
       'css'
       'html'
+      'image'
       'js'
       'json'
       'copy:source'
@@ -390,6 +410,7 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks 'grunt-csso'
   grunt.loadNpmTasks 'grunt-jsonlint'
   grunt.loadNpmTasks 'grunt-notify'
+  grunt.loadNpmTasks 'grunt-spritesmith'
 
   # 初期設定オブジェクトの登録
   grunt.initConfig conf
@@ -397,6 +418,7 @@ module.exports = (grunt) ->
   # 実行タスクの登録
   grunt.registerTask 'css', tasks.css
   grunt.registerTask 'html', tasks.html
+  grunt.registerTask 'image', tasks.image
   grunt.registerTask 'js', tasks.js
   grunt.registerTask 'json', tasks.json
   grunt.registerTask 'watcher', tasks.watcher

@@ -69,6 +69,7 @@ exports.template = (grunt, init, done) ->
       'grunt-notify': '>=0.2.4'
       #'grunt-reduce': 'git://github.com/japboy/grunt-reduce.git'
       #'grunt-simple-mocha': '>=0.4.0'
+      'grunt-spritesmith': '>=1.5.2'
       #'grunt-styleguide': '>=0.2.6'
       #'grunt-testem': '>=0.3.4'
 
