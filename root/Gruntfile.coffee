@@ -129,6 +129,7 @@ module.exports = (grunt) ->
     connect:
       intermediate:
         options:
+          hostname: '0.0.0.0'
           port: 50000
           middleware: (connect, options) ->
             return [lrSnippet, folderMount(connect, '.intermediate')]
