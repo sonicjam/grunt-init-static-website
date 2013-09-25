@@ -54,6 +54,7 @@ module.exports = (grunt) ->
         src: [
           '**/!(_)*.html'
         ]
+        filter: 'isFile'
         dest: '<%= path.intermediate %>'
         ext: '.html'
 
@@ -73,6 +74,7 @@ module.exports = (grunt) ->
           '**/*.coffee'
           '**/*.litcofee'
         ]
+        filter: 'isFile'
         dest: '<%= path.intermediate %>'
         ext: '.js'
 
@@ -106,6 +108,7 @@ module.exports = (grunt) ->
           '**/*.litcoffee'
           '!**/vendor/**/*'
         ]
+        filter: 'isFile'
 
     #
     # ファイルとディレクトリ削除タスク
@@ -166,6 +169,7 @@ module.exports = (grunt) ->
         expand: true
         cwd: '<%= path.intermediate %>'
         src: '**/*'
+        filter: 'isFile'
         dest: '<%= path.publish %>'
 
      #
@@ -185,6 +189,7 @@ module.exports = (grunt) ->
            '!**/*-min.css'
            '!**/vendor/**'
          ]
+         filter: 'isFile'
          dest: '<%= path.publish %>'
          ext: '.min.css'
 
@@ -202,6 +207,7 @@ module.exports = (grunt) ->
         expand: true
         cwd: '<%= path.source %>'
         src: '**/!(_)*.jade'
+        filter: 'isFile'
         dest: '<%= path.intermediate %>'
         ext: '.html'
 
@@ -220,6 +226,7 @@ module.exports = (grunt) ->
           '**/*.js'
           '!**/vendor/**/*.js'
         ]
+        filter: 'isFile'
 
     #
     # JSON 静的解析タスク
@@ -232,6 +239,7 @@ module.exports = (grunt) ->
           '<%= path.source %>/**/*.json'
           'package.json'
         ]
+        filter: 'isFile'
 
     #
     # LESS コンパイルタスク
@@ -247,6 +255,7 @@ module.exports = (grunt) ->
         expand: true
         cwd: '<%= path.source %>'
         src: '**/!(_)*.less'
+        filter: 'isFile'
         dest: '<%= path.intermediate %>'
         ext: '.css'
 
@@ -282,6 +291,7 @@ module.exports = (grunt) ->
           '**/!(_)*.sass'
           '**/!(_)*.scss'
         ]
+        filter: 'isFile'
         dest: '<%= path.intermediate %>'
         ext: '.css'
 
@@ -312,6 +322,7 @@ module.exports = (grunt) ->
         expand: true
         cwd: '<%= path.source %>'
         src: '**/!(_)*.styl'
+        filter: 'isFile'
         dest: '<%= path.intermediate %>'
         ext: '.css'
 
@@ -332,6 +343,7 @@ module.exports = (grunt) ->
            '!**/*-min.js'
            '!**/vendor/**'
          ]
+         filter: 'isFile'
          dest: '<%= path.publish %>'
          ext: '.min.js'
 
