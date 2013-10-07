@@ -318,6 +318,7 @@ module.exports = (grunt) ->
     stylus:
       options:
         compress: false
+        'include css': false
       source:
         expand: true
         cwd: '<%= path.source %>'
