@@ -3635,7 +3635,7 @@ var d = global.document;
 var preloads = [
   '//lorempixel.com/g/1280/1280/',
   '//placekitten.com/g/1280/1280',
-  '/img/sprite.png'
+  './img/sprite.png'
 ];
 
 var promises = [
