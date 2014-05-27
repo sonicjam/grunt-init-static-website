@@ -53,8 +53,8 @@ function done (resp) {
   loader.className += ' fade__out';
 }
 
-function fail (resp) {
-  console.error('エラー:', resp);
+function fail (err) {
+  console.error('エラー:', err.message);
 }
 
 Q.all(promises).then(done, fail);
