@@ -3650,7 +3650,7 @@ function done (resp) {
   var kid = new sample.Child();
   var loader = d.querySelector('.loader__mask');
   var message = d.getElementById('message'), thumb = d.getElementById('thumb');
-  var inc = 0, ph = 2;
+  var inc = 0, ph = 1;
 
   kid.on('echo', function (msg) {
     tool.listen(message, 'animationend', 400, function animationend (ev) {
@@ -3661,9 +3661,8 @@ function done (resp) {
     });
     message.className = 'fade__out';
     thumb.className = 'icon-ph0' + ph + ' fade__out';
-    console.log(ph);
     ph += 1;
-    if (ph >= 4) ph = 1;
+    if (ph > 4) ph = 1;
   });
 
   global.setInterval(function () {
