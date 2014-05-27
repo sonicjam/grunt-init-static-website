@@ -1,9 +1,11 @@
 {
   "bitwise": false,
   "camelcase": false,
-  "curly": true,
+  "curly": false,
   "eqeqeq": true,
+  "es3": false,
   "forin": false,
+  "freeze": false,
   "immed": true,
   "indent": 2,
   "latedef": true,
@@ -12,14 +14,20 @@
   "noempty": false,
   "nonew": true,
   "plusplus": false,
-  "quotmark": "single",
+  "quotmark": true,
   "undef": true,
-  "unused": true,
+  "unused": false,
+  "predef": [
+    "console",
+    "global",
+    "module",
+    "require",
+    "window"
+  ],
   "strict": true,
   "trailing": true,
-  "maxparams": 3,
+  "maxparams": 4,
   "maxdepth": 3,
-  "maxstatements": 6,
-  "maxlen": 80,
+  "maxlen": 100,
   "globalstrict": true
 }

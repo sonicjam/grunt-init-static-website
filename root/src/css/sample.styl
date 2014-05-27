@@ -1,0 +1,88 @@
+@import 'nib'
+@import './_mixins'
+@import './sprites.css'
+
+bgColor = rgb(255,255,255)
+fgColor = rgb(0,0,0)
+gray = rgb(230,230,230)
+
+body
+  background-color gray
+
+header
+  background-attachment scroll
+  background-color bgColor
+  background-image url("//placekitten.com/g/1280/1280")
+  background-position 50% 50%
+  background-repeat no-repeat
+  background-size cover
+  color fgColor
+  padding 2em
+  text-stroke 1px bgColor
+
+#main
+  background-color bgColor
+  height 400px
+  padding 30px 2em
+  position relative
+
+#thumb
+  left 50%
+  margin-left -(900 / 2)px
+  position absolute
+  top 30px
+
+  &.fade__out
+    animation-name fadeOutToRight
+    animation-delay 0.2s
+    animation-duration 0.6s
+    animation-fill-mode forwards
+
+  &.fade__in
+    animation-name fadeInFromLeft
+    animation-delay 0.2s
+    animation-duration 0.6s
+    animation-fill-mode forwards
+
+#message
+  height 120px
+  margin-top -(120 / 2)px
+  position absolute
+  text-stroke 1px bgColor
+  top 50%
+  width 90%
+
+  &.fade__out
+    animation-name fadeOutToRight
+    animation-duration 0.4s
+    animation-fill-mode forwards
+
+  &.fade__in
+    animation-name fadeInFromLeft
+    animation-duration 0.4s
+    animation-fill-mode forwards
+
+footer
+  filter grayscale(100%)
+  padding 2em
+  padding-top 1em
+
+  #sns > *
+    display inline-block
+
+.loader
+  &__mask
+    @extend $fadeOut
+    background-color bgColor
+    height 100%
+    left 0
+    position absolute
+    top 0
+    width 100%
+
+  &__icon
+    left 50%
+    margin-left -8px
+    margin-top -8px
+    position absolute
+    top 50%

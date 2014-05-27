@@ -1,15 +1,8 @@
 'use strict'
 
 # Node.js モジュール読込
+fs = require 'fs'
 path = require 'path'
-
-# LiveReload スニペット読込
-lrUtils = require 'grunt-contrib-livereload/lib/utils'
-lrSnippet = lrUtils.livereloadSnippet
-
-# LiveReload 用ヘルパー関数
-folderMount = (connect, point) ->
-  return connect.static path.resolve(point)
 
 
 #
@@ -36,7 +29,6 @@ module.exports = (grunt) ->
     # 基本パス設定 (`<%= path.PROP %>` として読込)
     path:
       source: 'src'
-      intermediate: '.intermediate'
       publish: 'dist'
 
     #
@@ -55,28 +47,23 @@ module.exports = (grunt) ->
           '**/!(_)*.html'
         ]
         filter: 'isFile'
-        dest: '<%= path.intermediate %>'
+        dest: '<%= path.publish %>'
         ext: '.html'
 
     #
-    # CoffeeScript コンパイルタスク
+    # Browserify JavaScript コンパイルタスク
     #
-    # * [grunt-contrib-coffee](https://github.com/gruntjs/grunt-contrib-coffee)
+    # * [grunt-browserify](https://github.com/jmreidy/grunt-browserify)
     #
-    coffee:
+    browserify:
       options:
-        bare: false
-        sourceMap: true
-      general:
-        expand: true
-        cwd: '<%= path.source %>'
-        src: [
-          '**/*.coffee'
-          '**/*.litcofee'
+        transform: [
+          'coffeeify'
+          'debowerify'
         ]
-        filter: 'isFile'
-        dest: '<%= path.intermediate %>'
-        ext: '.js'
+      app:
+        src: '<%= path.source %>/js/main.js'
+        dest: '<%= path.publish %>/js/app.js'
 
     #
     # CoffeeScript 静的解析タスク
@@ -85,30 +72,31 @@ module.exports = (grunt) ->
     # * [CoffeeLint options](http://www.coffeelint.org/#options)
     #
     coffeelint:
-      options:
-        indentation: 2
-        max_line_length: 80
-        camel_case_classes: true
-        no_trailing_semicolons:  true
-        no_implicit_braces: true
-        no_implicit_parens: false
-        no_empty_param_list: true
-        no_tabs: true
-        no_trailing_whitespace: true
-        no_plusplus: false
-        no_throwing_strings: true
-        no_backticks: true
-        line_endings: true
-        no_stand_alone_at: false
+      options: JSON.parse fs.readFileSync('.coffeelintrc')
       source:
         expand: true
         cwd: '<%= path.source %>'
         src: [
           '**/*.coffee'
           '**/*.litcoffee'
-          '!**/vendor/**/*'
+          '!**/common/**/*'
         ]
         filter: 'isFile'
+
+    #
+    # ファイル結合タスク
+    #
+    # * [grunt-contrib-concat](https://github.com/gruntjs/grunt-contrib-concat)
+    #
+    concat:
+      options:
+        separator: ';'
+      common:
+        src: [
+          '<%= path.source %>/js/common/**/*.js'
+          '<%= path.source %>/js/socials.js'
+        ]
+        dest: '<%= path.publish %>/js/common.js'
 
     #
     # ファイルとディレクトリ削除タスク
@@ -118,28 +106,22 @@ module.exports = (grunt) ->
     clean:
       options:
         force: true
-      intermediate:
-        src: '<%= path.intermediate %>'
       publish:
         src: '<%= path.publish %>'
 
     #
-    # ローカルサーバー (Connect) と LiveReload タスク
+    # ローカルサーバー (Connect) タスク
     #
     # * [grunt-contrib-connect](https://github.com/gruntjs/grunt-contrib-connect)
-    # * [grunt-contrib-livereload](https://github.com/gruntjs/grunt-contrib-livereload)
     #
     connect:
-      intermediate:
-        options:
-          hostname: '0.0.0.0'
-          port: 50000
-          middleware: (connect, options) ->
-            return [lrSnippet, folderMount(connect, '.intermediate')]
       publish:
         options:
-          port: 50001
+          port: 9000
+          protocol: 'http'
+          hostname: '*'
           base: '<%= path.publish %>'
+          livereload: true
 
     #
     # ファイルコピータスク
@@ -152,24 +134,20 @@ module.exports = (grunt) ->
         cwd: '<%= path.source %>'
         src: [
           '**/*'
+          '.htaccess'
           '!**/*.coffee'
           '!**/*.hbs'
           '!**/*.html'
           '!**/*.jade'
+          '!**/*.js'
           '!**/*.jst'
-          '!**/*.less'
           '!**/*.litcoffee'
           '!**/*.sass'
           '!**/*.scss'
           '!**/*.styl'
+          '!meta.json'
           '!img/sprites/**/*'
         ]
-        dest: '<%= path.intermediate %>'
-      intermediate:
-        expand: true
-        cwd: '<%= path.intermediate %>'
-        src: '**/*'
-        filter: 'isFile'
         dest: '<%= path.publish %>'
 
      #
@@ -180,14 +158,14 @@ module.exports = (grunt) ->
      csso:
        options:
          restructure: true
-       intermediate:
+       publish:
          expand: true
-         cwd: '<%= path.intermediate %>'
+         cwd: '<%= path.publish %>'
          src: [
            '**/*.css'
            '!**/*.min.css'
            '!**/*-min.css'
-           '!**/vendor/**'
+           '!**/common/**'
          ]
          filter: 'isFile'
          dest: '<%= path.publish %>'
@@ -208,7 +186,7 @@ module.exports = (grunt) ->
         cwd: '<%= path.source %>'
         src: '**/!(_)*.jade'
         filter: 'isFile'
-        dest: '<%= path.intermediate %>'
+        dest: '<%= path.publish %>'
         ext: '.html'
 
     #
@@ -224,7 +202,7 @@ module.exports = (grunt) ->
         cwd: '<%= path.source %>'
         src: [
           '**/*.js'
-          '!**/vendor/**/*.js'
+          '!**/common/**/*.js'
         ]
         filter: 'isFile'
 
@@ -240,24 +218,6 @@ module.exports = (grunt) ->
           'package.json'
         ]
         filter: 'isFile'
-
-    #
-    # LESS コンパイルタスク
-    #
-    # * [grunt-contrib-less](https://github.com/gruntjs/grunt-contrib-less)
-    #
-    less:
-      options:
-        compass: false
-        yuicompress: false
-        optimization: null
-      source:
-        expand: true
-        cwd: '<%= path.source %>'
-        src: '**/!(_)*.less'
-        filter: 'isFile'
-        dest: '<%= path.intermediate %>'
-        ext: '.css'
 
     #
     # メッセージ通知タスク
@@ -292,7 +252,7 @@ module.exports = (grunt) ->
           '**/!(_)*.scss'
         ]
         filter: 'isFile'
-        dest: '<%= path.intermediate %>'
+        dest: '<%= path.publish %>'
         ext: '.css'
 
     #
@@ -303,10 +263,10 @@ module.exports = (grunt) ->
     sprite:
       source:
         src: [
-          '<%= path.source %>/img/sprites/*.png'
+          './src/img/sprites/*.png'
         ]
-        destImg: '<%= path.source %>/img/sprite.png'
-        destCSS: '<%= path.source %>/css/sprites.css'
+        destImg: './dist/img/sprite.png'
+        destCSS: './dist/css/sprite.css'
         algorithm: 'binary-tree'
         padding: 1
 
@@ -324,7 +284,7 @@ module.exports = (grunt) ->
         cwd: '<%= path.source %>'
         src: '**/!(_)*.styl'
         filter: 'isFile'
-        dest: '<%= path.intermediate %>'
+        dest: '<%= path.publish %>'
         ext: '.css'
 
      #
@@ -334,15 +294,16 @@ module.exports = (grunt) ->
      #
      uglify:
        options:
+         sourceMap: true
          preserveComments: false
-       intermediate:
+       publish:
          expand: true
-         cwd: '<%= path.intermediate %>'
+         cwd: '<%= path.publish %>'
          src: [
            '**/*.js'
            '!**/*.min.js'
            '!**/*-min.js'
-           '!**/vendor/**'
+           '!**/common/**'
          ]
          filter: 'isFile'
          dest: '<%= path.publish %>'
@@ -359,13 +320,13 @@ module.exports = (grunt) ->
       css:
         files: [
           '<%= path.source %>/**/*.css'
-          '<%= path.source %>/**/*.less'
           '<%= path.source %>/**/*.s(a|c)ss'
           '<%= path.source %>/**/*.styl'
         ]
         tasks: [
-          'css'
-          'copy'
+          #'sass'
+          'stylus'
+          'csso'
           'notify:build'
         ]
       html:
@@ -374,8 +335,8 @@ module.exports = (grunt) ->
           '<%= path.source %>/**/*.jade'
         ]
         tasks: [
-          'html'
-          'copy'
+          'jade'
+          'bake'
           'notify:build'
         ]
       image:
@@ -383,27 +344,24 @@ module.exports = (grunt) ->
           '<%= path.source %>/**/img/**/*'
         ]
         tasks: [
-          'image'
+          'sprite'
           'copy'
+          'csso'
           'notify:build'
         ]
       js:
         files: [
           '<%= path.source %>/**/*.coffee'
           '<%= path.source %>/**/*.js'
+          '<%= path.source %>/**/*.json'
           '<%= path.source %>/**/*.litcoffee'
         ]
         tasks: [
-          'js'
-          'copy'
-          'notify:build'
-        ]
-      json:
-        files: '<%= path.source %>/**/*.json'
-        tasks: [
-          'json'
-          'html'
-          'copy'
+          'jsonlint'
+          'jshint'
+          'coffeelint'
+          'browserify'
+          'uglify'
           'notify:build'
         ]
 
@@ -412,58 +370,43 @@ module.exports = (grunt) ->
   # 実行タスクの順次定義 (`grunt.registerTask tasks.TASK` として登録)
   #
   tasks =
-    css: [
-      'less'
-      'stylus'
-      'sass'
-      'csso'
-    ]
-    html: [
-      'jade'
-      'bake'
-    ]
-    image: [
-      'sprite'
-    ]
-    js: [
-      #'jshint'
-      #'coffeelint'
-      'coffee'
-      'uglify'
-    ]
-    json: [
-      'jsonlint'
-    ]
-    watcher: [
+    listen: [
       'notify:watch'
       'connect'
       'watch'
     ]
     default: [
-      'css'
-      'html'
-      'image'
-      'js'
-      'json'
-      'copy'
+      'clean'
+      'jsonlint'    # JavaScript 静的解析
+      'jshint'
+      'coffeelint'
+      #'sass'        # CSS プリプロセス
+      'stylus'
+      'jade'        # HTML プリプロセス
+      'bake'
+      'concat'      # JavaScript 結合
+      'browserify'
+      'sprite'      # 画像スプライト化
+      'copy'        # その他コピー
+      'csso'        # コンパイル
+      'uglify'
       'notify:build'
     ]
 
 
   # Grunt プラグイン読込
   grunt.loadNpmTasks 'grunt-contrib-clean'
-  grunt.loadNpmTasks 'grunt-contrib-coffee'
+  grunt.loadNpmTasks 'grunt-contrib-concat'
   grunt.loadNpmTasks 'grunt-contrib-connect'
   grunt.loadNpmTasks 'grunt-contrib-copy'
   grunt.loadNpmTasks 'grunt-contrib-jade'
   grunt.loadNpmTasks 'grunt-contrib-jshint'
-  grunt.loadNpmTasks 'grunt-contrib-less'
-  grunt.loadNpmTasks 'grunt-contrib-livereload'
   grunt.loadNpmTasks 'grunt-contrib-sass'
   grunt.loadNpmTasks 'grunt-contrib-stylus'
   grunt.loadNpmTasks 'grunt-contrib-uglify'
   grunt.loadNpmTasks 'grunt-contrib-watch'
   grunt.loadNpmTasks 'grunt-bake'
+  grunt.loadNpmTasks 'grunt-browserify'
   grunt.loadNpmTasks 'grunt-coffeelint'
   grunt.loadNpmTasks 'grunt-csso'
   grunt.loadNpmTasks 'grunt-jsonlint'
@@ -474,10 +417,5 @@ module.exports = (grunt) ->
   grunt.initConfig conf
 
   # 実行タスクの登録
-  grunt.registerTask 'css', tasks.css
-  grunt.registerTask 'html', tasks.html
-  grunt.registerTask 'image', tasks.image
-  grunt.registerTask 'js', tasks.js
-  grunt.registerTask 'json', tasks.json
-  grunt.registerTask 'watcher', tasks.watcher
+  grunt.registerTask 'listen', tasks.listen
   grunt.registerTask 'default', tasks.default

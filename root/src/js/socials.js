@@ -22,12 +22,6 @@
  *   <div class="g-plusone" data-size="small"></div>
  *
  *
- * LINE:
- * http://media.line.naver.jp/howto/ja/
- *
- *   <span><script>new jp.naver.line.media.LineButton({"pc":false,"lang":"ja","type":"a"});</script></span>
- *
- *
  * mixi:
  * http://developer.mixi.co.jp/connect/mixi_plugin/favorite_button/spec/
  * http://developer.mixi.co.jp/connect/mixi_plugin/mixi_check/spec_mixi_check/
@@ -45,7 +39,11 @@
  *
  */
 
+/* global window, document */
+
 (function (w, d, s) {
+  'use strict';
+
   function go() {
     var js, fjs = d.getElementsByTagName(s)[0],
     load = function (url, id) {
@@ -57,7 +55,7 @@
     // Facebook
     w.fbAsyncInit = function() {
       // init the FB JS SDK
-      FB.init({
+      w.FB.init({
         appId: 'YOUR_APP_ID',
         channelUrl: '//WWW.YOUR_DOMAIN.COM/channel.html',
         status: true,
@@ -72,11 +70,10 @@
 
     load('//connect.facebook.net/ja_JP/all.js', 'fbjssdk');
     load('https://apis.google.com/js/plusone.js', 'gplus1js');
-    //load('//media.line.naver.jp/js/line-button.js?v=20130508', 'linejs')
-    load('//static.mixi.jp/js/plugins.js#lang=ja', 'mixipjs')
-    load('//static.mixi.jp/js/share.js', 'mixisjs')
+    load('//static.mixi.jp/js/plugins.js#lang=ja', 'mixipjs');
+    load('//static.mixi.jp/js/share.js', 'mixisjs');
     load('//platform.twitter.com/widgets.js', 'tweetjs');
   }
-  if (w.addEventListener) { w.addEventListener("load", go, false); }
-  else if (w.attachEvent) { w.attachEvent("onload",go); }
+  if (w.addEventListener) { w.addEventListener('load', go, false); }
+  else if (w.attachEvent) { w.attachEvent('onload', go); }
 })(window, document, 'script');

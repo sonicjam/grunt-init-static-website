@@ -1,0 +1,90 @@
+@import 'nib'
+
+// Mixins
+
+coord3d(x y z)
+  _matrix = \
+    1,0,0,0, \
+    0,1,0,0, \
+    0,0,1,0, \
+    x,y,z,1
+  transform matrix3d(_matrix)
+
+coord2d(x y)
+  left (x)px
+  top (y)px
+
+text-stroke(offset color)
+  _shadow = \
+    (offset * -1) (offset * -1) 0 color, \
+    offset (offset * -1) 0 color, \
+    (offset * -1) offset 0 color, \
+    offset offset 0 color
+
+  text-shadow _shadow
+
+
+// Polyfills
+
+// Filter Effects 1.0 (Editor's Draft)
+// http://dvcs.w3.org/hg/FXTF/raw-file/tip/filters/index.html
+
+filter()
+  -webkit-filter: arguments
+  filter: arguments
+
+filter-margin()
+  -webkit-filter-margin: arguments
+  filter-margin: arguments
+
+filter-margin-top()
+  -webkit-filter-margin-top: arguments
+  filter-margin-top: arguments
+
+filter-margin-right()
+  -webkit-filter-margin-right: arguments
+  filter-margin-right: arguments
+
+filter-margin-bottom()
+  -webkit-filter-margin-bottom: arguments
+  filter-margin-bottom: arguments
+
+filter-margin-left()
+  -webkit-filter-margin-left: arguments
+  filter-margin-left: arguments
+
+color-interpolation-filters()
+  -webkit-color-interpolation-filters: arguments
+  color-interpolation-filters: arguments
+
+
+// Animations
+
+@keyframes fadeOutToRight
+  0%
+    coord3d 0 0 0
+    opacity 1
+  100%
+    coord3d 100 0 0
+    opacity 0
+
+@keyframes fadeInFromLeft
+  0%
+    coord3d -100 0 0
+    opacity 0
+  100%
+    coord3d 0 0 0
+    opacity 1
+
+
+// Transitions
+
+$fadeOut
+  opacity 1
+  transition-delay 0
+  transition-duration 1s
+  transition-property opacity
+  transition-timing-function ease
+
+  &.fade__out
+    opacity 0
