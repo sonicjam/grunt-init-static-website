@@ -1,0 +1,24 @@
+.icon-ph01 {
+  background-image: url(../img/sprite.png);
+  background-position: 0px 0px;
+  width: 900px;
+  height: 400px;
+}
+.icon-ph02 {
+  background-image: url(../img/sprite.png);
+  background-position: 0px -401px;
+  width: 900px;
+  height: 400px;
+}
+.icon-ph03 {
+  background-image: url(../img/sprite.png);
+  background-position: -901px 0px;
+  width: 900px;
+  height: 400px;
+}
+.icon-ph04 {
+  background-image: url(../img/sprite.png);
+  background-position: -901px -401px;
+  width: 900px;
+  height: 400px;
+}
